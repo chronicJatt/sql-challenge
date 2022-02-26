@@ -3,31 +3,15 @@
 DROP TABLE IF EXISTS dept_emp;
 DROP TABLE IF EXISTS dept_manager;
 DROP TABLE IF EXISTS salaries;
-DROP TABLE IF EXISTS titles;
 DROP TABLE IF EXISTS departments;
 DROP TABLE IF EXISTS employees;
+DROP TABLE IF EXISTS titles;
 
 --Create Tables
 CREATE TABLE departments (
-    dept_no int   NOT NULL,
+    dept_no varchar   NOT NULL,
     dept_name varchar   NOT NULL,
     CONSTRAINT pk_departments PRIMARY KEY (
-        dept_no
-     )
-);
-
-CREATE TABLE dept_emp (
-    emp_no int   NOT NULL,
-    dept_no int   NOT NULL,
-    CONSTRAINT pk_dept_emp PRIMARY KEY (
-        emp_no
-     )
-);
-
-CREATE TABLE dept_manager (
-    dept_no int   NOT NULL,
-    emp_no int   NOT NULL,
-    CONSTRAINT pk_dept_manager PRIMARY KEY (
         dept_no
      )
 );
@@ -45,12 +29,19 @@ CREATE TABLE employees (
      )
 );
 
+CREATE TABLE dept_emp (
+    emp_no int   NOT NULL,
+    dept_no varchar   NOT NULL
+);
+
+CREATE TABLE dept_manager (
+    dept_no varchar   NOT NULL,
+    emp_no int   NOT NULL
+);
+
 CREATE TABLE salaries (
     emp_no int   NOT NULL,
-    salary int   NOT NULL,
-    CONSTRAINT pk_salaries PRIMARY KEY (
-        emp_no
-     )
+    salary int   NOT NULL
 );
 
 CREATE TABLE titles (
@@ -73,6 +64,9 @@ REFERENCES departments (dept_no);
 
 ALTER TABLE dept_manager ADD CONSTRAINT fk_dept_manager_emp_no FOREIGN KEY(emp_no)
 REFERENCES employees (emp_no);
+
+ALTER TABLE employees ADD CONSTRAINT fk_employees_emp_title_id FOREIGN KEY(emp_title_id)
+REFERENCES titles (title_id);
 
 ALTER TABLE salaries ADD CONSTRAINT fk_salaries_emp_no FOREIGN KEY(emp_no)
 REFERENCES employees (emp_no);
